@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: AES
-
-namespace AES
+﻿namespace AES
 {
     using System;
 
@@ -130,8 +128,6 @@ namespace AES
             return state;
         }
 
-        // ==== Core Steps ====
-
         private static void SubBytes(byte[] state)
         {
             for (int i = 0; i < state.Length; i++)
@@ -198,8 +194,7 @@ namespace AES
                 state[i] ^= RoundKeys[round * 16 + i];
         }
 
-        // ==== Key Expansion ====
-
+        // Key Expansion
         private static byte[] KeyExpansion(byte[] key)
         {
             byte[] expanded = new byte[176]; // 11 round keys of 16 bytes
