@@ -46,14 +46,13 @@ namespace AES.ModeHandlers
 
         public override byte[] Decrypt(byte[] ciphertext)
         {
-            // CTR is symmetric
             return Encrypt(ciphertext);
         }
 
         private byte[] BuildCounterBlock(int counter)
         {
             var block = new byte[BlockSize];
-            // copy nonce prefix (12 bytes)
+
             Array.Copy(_noncePrefix, 0, block, 0, _noncePrefix.Length);
 
             // encode counter as 4-byte big endian in the last 4 bytes

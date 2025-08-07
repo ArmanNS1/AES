@@ -6,7 +6,6 @@
 
         public override string ModeName => "ECB";
 
-        // ← This is the constructor that takes exactly one byte[] key
         public ECBModeHandler(byte[] key)
         {
             if (key.Length != 16)

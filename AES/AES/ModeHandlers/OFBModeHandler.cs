@@ -36,17 +36,14 @@ namespace AES.ModeHandlers
                 byte[] plainBlock = new byte[BlockSize];
                 Array.Copy(plaintext, offset, plainBlock, 0, BlockSize);
 
-                // Encrypt feedback
                 byte[] encryptedFeedback = AESAlgorithm.Encrypt(feedback);
 
-                // XOR with plaintext to get ciphertext block
                 byte[] cipherBlock = new byte[BlockSize];
                 for (int j = 0; j < BlockSize; j++)
                     cipherBlock[j] = (byte)(plainBlock[j] ^ encryptedFeedback[j]);
 
-                // write out and update feedback
                 Array.Copy(cipherBlock, 0, output, offset, BlockSize);
-                feedback = cipherBlock; // new feedback is ciphertext block
+                feedback = cipherBlock; 
             }
 
             return output;
@@ -64,17 +61,14 @@ namespace AES.ModeHandlers
                 byte[] cipherBlock = new byte[BlockSize];
                 Array.Copy(ciphertext, offset, cipherBlock, 0, BlockSize);
 
-                // Encrypt feedback
                 byte[] encryptedFeedback = AESAlgorithm.Encrypt(feedback);
 
-                // XOR with ciphertext to get plaintext block
                 byte[] plainBlock = new byte[BlockSize];
                 for (int j = 0; j < BlockSize; j++)
                     plainBlock[j] = (byte)(cipherBlock[j] ^ encryptedFeedback[j]);
 
-                // write out and update feedback
                 Array.Copy(plainBlock, 0, output, offset, BlockSize);
-                feedback = cipherBlock; // new feedback is ciphertext block
+                feedback = cipherBlock;
             }
 
             return output;
