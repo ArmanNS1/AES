@@ -16,20 +16,17 @@ namespace AES
 
             while (true)
             {
-                // دریافت متن از کاربر
                 Console.WriteLine("Please enter the text to encrypt (or type 'exit' to quit):");
                 string plaintext = Console.ReadLine() ?? "";
                 if (plaintext.Equals("exit", StringComparison.OrdinalIgnoreCase))
                     break;
 
-                // دریافت کلید از کاربر (16 کاراکتر)
                 Console.WriteLine("\nPlease enter the encryption key (16 characters):");
                 string keyInput = Console.ReadLine() ?? "";
                 if (keyInput.Equals("exit", StringComparison.OrdinalIgnoreCase))
                     break;
                 byte[] key = Encoding.UTF8.GetBytes(keyInput.PadRight(16).Substring(0, 16));
 
-                // دریافت بردار اولیه / نانس
                 Console.WriteLine(
                     "\nPlease enter the IV/Nonce (16 characters) or leave blank for default (type 'exit' to quit):"
                 );
@@ -42,7 +39,6 @@ namespace AES
                         : ivInput.PadRight(16).Substring(0, 16)
                 );
 
-                // انتخاب حالت رمزنگاری
                 Console.WriteLine("\nPlease select the encryption mode:");
                 Console.WriteLine("1. ECB");
                 Console.WriteLine("2. CBC");
@@ -61,11 +57,9 @@ namespace AES
                     mode = 1;
                 }
 
-                // تبدیل متن به بایت و پدینگ PKCS7
                 byte[] plainBytes = Encoding.UTF8.GetBytes(plaintext);
                 plainBytes = PadPkcs7(plainBytes, 16);
 
-                // ایجاد هندلر مناسب
                 OperationModeHandler handler = mode switch
                 {
                     2 => new CBCModeHandler(key, iv),
@@ -78,20 +72,17 @@ namespace AES
 
                 try
                 {
-                    // رمزنگاری
                     Console.WriteLine("Encrypting...");
                     byte[] ciphertext = handler.Encrypt(plainBytes);
                     string base64Cipher = Convert.ToBase64String(ciphertext);
                     Console.WriteLine($"Ciphertext (Base64): {base64Cipher}\n");
 
-                    // رمزگشایی
                     Console.WriteLine("Decrypting...");
                     byte[] decryptedPadded = handler.Decrypt(ciphertext);
                     byte[] decrypted = UnpadPkcs7(decryptedPadded);
                     string decryptedText = Encoding.UTF8.GetString(decrypted);
                     Console.WriteLine($"Decrypted text: {decryptedText}\n");
 
-                    // اعتبارسنجی
                     if (decryptedText == plaintext)
                         Console.WriteLine("✓ Success! Decrypted matches original.");
                     else
